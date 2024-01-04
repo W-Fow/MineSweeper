@@ -1,0 +1,41 @@
+body {
+    color: #eeeeee;
+    background-color: #222222;
+}
+.unclicked {
+    color: #aaaaaa;
+    height: 50px;
+    width: 50px;
+}
+.unclicked:hover{
+    color: #cccccc;
+    cursor: pointer;
+}
+.unclicked:active{
+    color: #eeeeee;
+}
+.flagged{
+    height: 50px;
+    width: 50px;
+    background-color:#bb0000;
+}
+.clicked,.clicked:hover,.clicked:active{
+    color:#000000;
+    border:#000000;
+    cursor: default;
+    border-color:#ffffff;     
+}
+#board {
+    display: grid;
+    /* grid-template-columns: repeat(5, 50px); */
+    /* grid-template-rows: repeat(5, 50px); */
+    padding: 10px;
+    max-width: 200px;
+}
+/* .board {
+    display: grid;
+    grid-template-columns: repeat(5, min-content);
+    grid-template-rows: repeat(5, min-content);
+    padding: 10px;
+    max-width: 200px;
+} */
