@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>MSWF</title>
+  <link href="style.css" rel="stylesheet"/>
+</head>
+
+<body>
+    <h1>Welcome to Wade's Mine Sweeper</h1>
+    <h4>Welcom to mine sweeper. 
+        Enter the board size below (a single number, the board is alwasy a square) 
+        and the number of mines wo be placed on the board.
+        Right click a square to flag it.
+    </h4>
+    <div>
+        <!-- <text>Board Size</text><br> -->
+        <input id="boardSize" type="number" placeholder="Board Size" value="5">
+    </div>
+    <br>
+    <div>
+        <!-- <text>Number of Mines</text> <br> -->
+        <input id="numMines" type="number" placeholder="Number of Mines" value="3">
+    </div>
+    <br>
+    <button onclick="generateBoard()">Generate Board</button>
+    
+    <hr>
+    <div id="board"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -18,24 +18,40 @@ body {
     height: 50px;
     width: 50px;
     background-color:#bb0000;
+    border-style: none;
 }
 .clicked,.clicked:hover,.clicked:active{
     color:#000000;
-    border:#000000;
     cursor: default;
-    border-color:#ffffff;     
+    border-style:solid;
+    border-width:1px;
+    border-radius:0%;
+    border-color:#555555;     
+}
+
+.cell{
+    color: hsl(0, 0, 70%);
+    border-radius:0%;
+    cursor: pointer;
+    height: 50px;
+    width: 50px;
+}
+.cell:hover{
+    color: hsl(0, 0, 80%);
+}
+.cell:active{
+    color: hsl(0, 0, 90%);
+}
+
+.cell.revealed{
+
+}
+.cell.flagged{
+
 }
 #board {
-    display: grid;
-    /* grid-template-columns: repeat(5, 50px); */
-    /* grid-template-rows: repeat(5, 50px); */
+    display: inline-grid;
+    
     padding: 10px;
     max-width: 200px;
 }
-/* .board {
-    display: grid;
-    grid-template-columns: repeat(5, min-content);
-    grid-template-rows: repeat(5, min-content);
-    padding: 10px;
-    max-width: 200px;
-} */

@@ -1,6 +1,6 @@
 var mines = null;
 var boardSize = null;
-// const numMinesInput = document.getElementById("numMines");
+var flagMode = false;
 
 function generateBoard(){
     let numMines = document.getElementById("numMines").value;
@@ -66,7 +66,11 @@ function reveal(el){
         element.textContent="boom";
     }else{
         nearByBombs=calculateNumber(Number(x),Number(y));
-        element.textContent=nearByBombs;
+        if (nearByBombs==0){
+            //TODO need to clear nearby cells
+        }else{
+            element.textContent=nearByBombs;
+        }
     }
     element.disabled = true;
 }
@@ -101,5 +105,5 @@ function placeMines(size,num){
     }
 }
 function game_page(){
-    location.href = "file:///C:/Users/wfowl/PersonalProjects/MineSweeper/game_screen.html";
+    location.href = "file:///C:/Users/wfowl/git/MineSweeper/game_screen.html";
 }
