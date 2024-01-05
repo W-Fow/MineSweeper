@@ -2,32 +2,6 @@ body {
     color: #eeeeee;
     background-color: #222222;
 }
-.unclicked {
-    color: #aaaaaa;
-    height: 50px;
-    width: 50px;
-}
-.unclicked:hover{
-    color: #cccccc;
-    cursor: pointer;
-}
-.unclicked:active{
-    color: #eeeeee;
-}
-.flagged{
-    height: 50px;
-    width: 50px;
-    background-color:#bb0000;
-    border-style: none;
-}
-.clicked,.clicked:hover,.clicked:active{
-    color:#000000;
-    cursor: default;
-    border-style:solid;
-    border-width:1px;
-    border-radius:0%;
-    border-color:#555555;     
-}
 
 #flag-button{
     background-color: hsl(0, 100%, 20%);
@@ -41,26 +15,31 @@ body {
 #flag-button:active{
     background-color: hsl(0, 100%, 32%);
 }
+
 .cell{
-    color: hsl(0, 0, 70%);
+    background-color: hsl(0, 0, 70%);
+    border-width:1px;
     border-radius:0%;
+    border-color:#555555;
     cursor: pointer;
     height: 50px;
     width: 50px;
 }
 .cell:hover{
-    color: hsl(0, 0, 80%);
+    background-color: hsl(0, 0, 80%);
 }
 .cell:active{
-    color: hsl(0, 0, 90%);
+    background-color: hsl(0, 0, 90%);
 }
-
 .cell.revealed{
-
+    color:#000000;
+    cursor:default;
+    background-color:#666666;
 }
 .cell.flagged{
-
+    background-color:hsl(0, 90%, 45%)
 }
+
 #board {
     display: inline-grid;
     

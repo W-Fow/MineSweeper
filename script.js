@@ -33,9 +33,9 @@ function createBoard(n){
     for (let i=0; i<n;i++){
         for (let j=0;j<n;j++){
             const button = document.createElement("button");
-            button.setAttribute("class","unclicked");
+            button.setAttribute("class","cell");
             button.setAttribute("id","("+j+","+i+")");
-            button.setAttribute("onclick","reveal(this)");
+            button.setAttribute("onclick","revealElement(this)");
             button.setAttribute("oncontextmenu","flag(this);return false;");
             board_elem.appendChild(button);
         }
@@ -44,52 +44,73 @@ function createBoard(n){
 
 function flag(el){
     var element=el;
-    element.className='flagged';
-    //want to add action here to unflag
+    element.classList.add('flagged');
     element.setAttribute("oncontextmenu","unflag(this);return false;");
     element.setAttribute("onclick","");
+    element.disabled = true;
 }
 function unflag(el){
     var element=el;
-    element.className='unclicked';
+    element.classList.remove('flagged');
     element.setAttribute("oncontextmenu","flag(this);return false;");
-    element.setAttribute("onclick","reveal(this)");
+    element.setAttribute("onclick","revealElement(this)");
+    element.disabled = false;
 }
-
-function reveal(el){
+function revealElement(el){
     var element=el;
     let x = element.id[1];
     let y = element.id[3];
-    element.className='clicked';
+    reveal(element,x,y);
+}
+function revealByCoordinates(x,y){
+    console.log("x:"+x+" y:"+y);
+    let element=document.getElementById("("+x+","+y+")");
+    reveal(element,x,y);
+}
+function reveal(el,x,y){
+    let element=el;
+    element.classList.add('revealed');
     element.setAttribute("oncontextmenu","");
     if (mines[x][y]==1){
         element.textContent="boom";
+        alert("You lose");
+
     }else{
-        nearByBombs=calculateNumber(Number(x),Number(y));
+        nearByBombs=viewNearByCells(isBomb,Number(x),Number(y));
         if (nearByBombs==0){
-            //TODO need to clear nearby cells
+            viewNearByCells(revealByCoordinates,Number(x),Number(y));
         }else{
             element.textContent=nearByBombs;
         }
     }
     element.disabled = true;
 }
-function calculateNumber(x,y){
-    return (safeCheck(x-1,y-1)+
-            safeCheck(x-1,y)+
-            safeCheck(x-1,y+1)+
-            safeCheck(x,y-1)+
-            safeCheck(x,y+1)+
-            safeCheck(x+1,y-1)+
-            safeCheck(x+1,y)+
-            safeCheck(x+1,y+1)
+function isBomb(x,y){
+    return mines[x][y];
+}
+
+function viewNearByCells(f,x,y){
+    
+    return (safeCheck(f,x-1,y-1)+
+            safeCheck(f,x-1,y)+
+            safeCheck(f,x-1,y+1)+
+            safeCheck(f,x,y-1)+
+            safeCheck(f,x,y+1)+
+            safeCheck(f,x+1,y-1)+
+            safeCheck(f,x+1,y)+
+            safeCheck(f,x+1,y+1)
             );
 }
-function safeCheck(x,y){
+function safeCheck(f,x,y){
     if (x>=boardSize || x<0 || y>=boardSize || y<0){
         return 0;
     }else{
-        return mines[x][y];
+        element = document.getElementById("("+x+","+y+")");
+        if(element.classList.contains("revealed")){
+            return 0;
+        }else{
+        return f(x,y)
+        }
     }
 }
 
@@ -103,7 +124,4 @@ function placeMines(size,num){
             mines[x][y]=1;
         }
     }
-}
-function game_page(){
-    location.href = "file:///C:/Users/wfowl/git/MineSweeper/game_screen.html";
 }
