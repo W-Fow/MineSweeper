@@ -1,6 +1,8 @@
 var mines = null;
 var boardSize = null;
 var flagMode = false;
+var cellsRevealed = 0;
+var numCellsRevealedToWin = null;
 
 function generateBoard(){
     let numMines = document.getElementById("numMines").value; 
@@ -14,6 +16,9 @@ function generateBoard(){
 
     mines = create2DArray(boardSize);
     placeMines(boardSize,numMines);
+
+    cellsRevealed=0;
+    numCellsRevealedToWin = boardSize*boardSize-numMines;
 }
 
 function createBoard(n){
@@ -68,6 +73,9 @@ function handleCellClick(event){
     }else{
         if(! element.classList.contains("flagged")){
             revealElement(element);
+            if (cellsRevealed==numCellsRevealedToWin){
+                alert("Congratulations! You Won!");
+            }
         }
     }
 }
@@ -138,7 +146,12 @@ function reveal(el,x,y){
         }
     }
     element.disabled = true;
+    cellsRevealed++;
+    console.log(`Revealing Cell x:${x} y:${y}`);
+    console.log(`Cells revealed: ${cellsRevealed}\nCells needed to win: ${numCellsRevealedToWin}`);
+    
 }
+
 function isBomb(x,y){
     return mines[x][y];
 }
@@ -162,7 +175,7 @@ function safeCheck(f,x,y){
         if(element.classList.contains("revealed")){
             return 0;
         }else{
-        return f(x,y)
+            return f(x,y)
         }
     }
 }
