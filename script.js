@@ -1,17 +1,16 @@
 var mines = null;
 var boardSize = null;
-var flagMode = false;
-var cellsRevealed = 0;
+var cellsRevealed = null;
 var numCellsRevealedToWin = null;
+var flagMode = false;
 
 function generateBoard(){
-    let numMines = document.getElementById("numMines").value; 
+    const numMines = document.getElementById("numMines").value; 
     boardSize = document.getElementById("boardSize").value; 
 
-    let board_elem = document.getElementById("board"); 
+    const board_elem = document.getElementById("board"); 
     board_elem.style.gridTemplateColumns = `repeat(${boardSize}, 50px)`;
     board_elem.style.gridTemplateRows = `repeat(${boardSize}, 50px)`;
-    
     createBoard(boardSize);
 
     mines = create2DArray(boardSize);
@@ -34,14 +33,12 @@ function createBoard(n){
             button.addEventListener('click', handleCellClick);
             button.addEventListener('contextmenu', handleCellRightClick);
             
-            //button.setAttribute("onclick","revealElement(this)");
-            //button.setAttribute("oncontextmenu","flag(this);return false;");
             board_elem.appendChild(button);
         }
     }
 }
 function create2DArray (size){
-    let array = [];
+    const array = [];
     for (let i = 0; i < size; i++) {
         let row = [];
         for (let j = 0; j < size; j++) {
@@ -73,9 +70,6 @@ function handleCellClick(event){
     }else{
         if(! element.classList.contains("flagged")){
             revealElement(element);
-            if (cellsRevealed==numCellsRevealedToWin){
-                alert("Congratulations! You Won!");
-            }
         }
     }
 }
@@ -102,12 +96,12 @@ function toggleFlag(element){
     }
 }
 
-function flag(el){
-    let element=el;
+function flag(element){
+    //let element=el;
     element.classList.add('flagged');
 }
-function unflag(el){
-    let element=el;
+function unflag(element){
+    //let element=el;
     element.classList.remove('flagged');
 }
 
@@ -136,7 +130,9 @@ function reveal(el,x,y){
     element.classList.replace("hidden","revealed");
     if (mines[x][y]==1){
         element.textContent="boom";
-        alert("You lose");
+        setTimeout(function() {
+            alert("You lose");
+        }, 0)
     }else{
         nearByBombs=viewNearByCells(isBomb,Number(x),Number(y));
         if (nearByBombs==0){
@@ -147,9 +143,11 @@ function reveal(el,x,y){
     }
     element.disabled = true;
     cellsRevealed++;
-    console.log(`Revealing Cell x:${x} y:${y}`);
-    console.log(`Cells revealed: ${cellsRevealed}\nCells needed to win: ${numCellsRevealedToWin}`);
-    
+    if(cellsRevealed==numCellsRevealedToWin){
+        setTimeout(function() {
+            alert("Congratulations! You won");
+        }, 0)
+    }
 }
 
 function isBomb(x,y){
