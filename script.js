@@ -11,7 +11,7 @@ function generateBoard(){
     const board_elem = document.getElementById("board"); 
     board_elem.style.gridTemplateColumns = `repeat(${boardSize}, 50px)`;
     board_elem.style.gridTemplateRows = `repeat(${boardSize}, 50px)`;
-    createBoard(boardSize);
+    createBoard(boardSize, board_elem);
 
     mines = create2DArray(boardSize);
     placeMines(boardSize,numMines);
@@ -20,20 +20,21 @@ function generateBoard(){
     numCellsRevealedToWin = boardSize*boardSize-numMines;
 }
 
-function createBoard(n){
-    const board_elem = document.getElementById("board");
-    board_elem.innerHTML = '';
+function createBoard(n, boardElem){
+    boardElem.innerHTML = '';
     for (let i=0; i<n;i++){
         for (let j=0;j<n;j++){
-            const button = document.createElement("button");
-            button.setAttribute("class","cell");
-            button.classList.add("hidden");
-            button.setAttribute("id","("+j+","+i+")");
+            var cell = document.createElement("div");
+            cell.setAttribute("class","cell");
+            cell.classList.add("hidden");
+            cell.setAttribute("id","("+j+","+i+")");
+            cell.dataset.row=i;
+            cell.dataset.col=j;
 
-            button.addEventListener('click', handleCellClick);
-            button.addEventListener('contextmenu', handleCellRightClick);
+            cell.addEventListener('click', handleCellClick);
+            cell.addEventListener('contextmenu', handleCellRightClick);
             
-            board_elem.appendChild(button);
+            boardElem.appendChild(cell);
         }
     }
 }
@@ -90,23 +91,14 @@ function handleCellRightClick(event){
 
 function toggleFlag(element){
     if(element.classList.contains("flagged")){
-        unflag(element);
+        element.classList.remove("flagged");
     }else{
-        flag(element);
+        element.classList.add("flagged");
     }
 }
 
-function flag(element){
-    //let element=el;
-    element.classList.add('flagged');
-}
-function unflag(element){
-    //let element=el;
-    element.classList.remove('flagged');
-}
-
 function toggleFlagMode(flagButton){
-    flagMode = !flagMode
+    flagMode = !flagMode;
     if(flagMode){
         flagButton.style.backgroundColor= "Crimson";
     }else{
@@ -115,24 +107,23 @@ function toggleFlagMode(flagButton){
 }
 
 
-function revealElement(el){
-    let element=el;
-    let x = element.id[1];
-    let y = element.id[3];
+function revealElement(element){
+    let x = element.dataset.col;
+    let y = element.dataset.row;
     reveal(element,x,y);
 }
 function revealByCoordinates(x,y){
-    let element=document.getElementById("("+x+","+y+")");
+    let element = document.querySelector(`.cell[data-row="${y}"][data-col="${x}"]`)
     reveal(element,x,y);
 }
-function reveal(el,x,y){
-    let element=el;
+function reveal(element,x,y){
     element.classList.replace("hidden","revealed");
     if (mines[x][y]==1){
         element.textContent="boom";
-        setTimeout(function() {
+        setTimeout(function() { //need timeout so that css and html update before the alert appears
             alert("You lose");
-        }, 0)
+        }, 5)
+        return;
     }else{
         nearByBombs=viewNearByCells(isBomb,Number(x),Number(y));
         if (nearByBombs==0){
@@ -143,10 +134,13 @@ function reveal(el,x,y){
     }
     element.disabled = true;
     cellsRevealed++;
+    checkWin();
+}
+function checkWin(){
     if(cellsRevealed==numCellsRevealedToWin){
         setTimeout(function() {
             alert("Congratulations! You won");
-        }, 0)
+        }, 5)
     }
 }
 
@@ -169,7 +163,7 @@ function safeCheck(f,x,y){
     if (x>=boardSize || x<0 || y>=boardSize || y<0){
         return 0;
     }else{
-        let element = document.getElementById("("+x+","+y+")");
+        let element = document.querySelector(`.cell[data-row="${y}"][data-col="${x}"]`)
         if(element.classList.contains("revealed")){
             return 0;
         }else{
