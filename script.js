@@ -1,4 +1,4 @@
-var mines = null;
+var mines = null;//2D array to hold the location of the mines
 var boardSize = null;
 var cellsRevealed = null;
 var numCellsRevealedToWin = null;
@@ -70,7 +70,9 @@ function handleCellClick(event){
         toggleFlag(element);
     }else{
         if(! element.classList.contains("flagged")){
-            revealElement(element);
+            revealByElement(element);
+        }else{
+            return;
         }
     }
 }
@@ -82,7 +84,9 @@ function handleCellRightClick(event){
     }
     if(flagMode){
         if(! element.classList.contains("flagged")){
-            revealElement(element);
+            revealByElement(element);
+        }else{
+            return
         }
     }else{
         toggleFlag(element);
@@ -107,7 +111,7 @@ function toggleFlagMode(flagButton){
 }
 
 
-function revealElement(element){
+function revealByElement(element){
     let x = element.dataset.col;
     let y = element.dataset.row;
     reveal(element,x,y);
