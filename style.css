@@ -1,6 +1,8 @@
 body {
     color: #eeeeee;
-    background-color: #222222;
+    height: 100vh;
+    background-image: linear-gradient(to bottom right, #111111 , #00515c);
+    /* background-color: #222222; */
 }
 
 #flag-button{

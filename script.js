@@ -124,9 +124,9 @@ function reveal(element,x,y){
     element.classList.replace("hidden","revealed");
     if (mines[x][y]==1){
         element.textContent="boom";
-        setTimeout(function() { //need timeout so that css and html update before the alert appears
-            alert("You lose");
-        }, 5)
+        //need timeout so that css and html update before the alert appears
+        setTimeout(function() { alert("You lose");}, 5)
+        removeEventListeners();
         return;
     }else{
         nearByBombs=viewNearByCells(isBomb,Number(x),Number(y));
@@ -140,12 +140,23 @@ function reveal(element,x,y){
     cellsRevealed++;
     checkWin();
 }
+function loss(){
+    return;
+}
 function checkWin(){
     if(cellsRevealed==numCellsRevealedToWin){
         setTimeout(function() {
             alert("Congratulations! You won");
         }, 5)
+        removeEventListeners();
     }
+}
+
+function removeEventListeners(){
+    //cloning elements removes event listeners
+    var old_element = document.getElementById("board");
+    var new_element = old_element.cloneNode(true);
+    old_element.parentNode.replaceChild(new_element, old_element);
 }
 
 function isBomb(x,y){
